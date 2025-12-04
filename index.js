@@ -4,12 +4,20 @@ import { uWebSocketsTransport } from "@colyseus/uwebsockets-transport";
 import { FpsRoom } from "./rooms/fps-room.js";
 
 const PORT = Number(process.env.PORT || 2567);
-const ALLOWED = new Set(["http://localhost:3000"]); // 👈 one origin only
+
+// ✅ FIX: Add your live domains here
+const ALLOWED = new Set([
+  "http://localhost:3000",
+  "https://www.bitmatch.fun",
+  "https://bitmatch.fun"
+]);
 
 function pickOrigin(req) {
   const fromNode = req?.headers?.origin;
   const fromUws  = req?.getHeader?.("origin");
   const origin = fromNode || fromUws || "";
+  
+  // Checks if origin is in our ALLOWED list, otherwise defaults to localhost
   return ALLOWED.has(origin) ? origin : "http://localhost:3000";
 }
 
