@@ -59,5 +59,5 @@ app.get("/", (res, req) => {
 });
 
 gameServer.listen(PORT).then(() => {
-  console.log(`✅ Colyseus (uWS) listening on ws://127.0.0.1:${PORT}`);
+  console.log(`✅ Colyseus (uWS) listening on ws://0.0.0.0:${PORT}`);
 });
