@@ -1,3 +1,4 @@
+// rooms/fps-room.js
 import { Room } from "colyseus";
 import { FpsState, Player } from "../schema/fps-state.js";
 import RAPIER from "@dimforge/rapier3d-compat";
@@ -16,14 +17,7 @@ const MAP_ROT_Y = Math.PI;
 export class FpsRoom extends Room {
   async onCreate(options) {
 
-    this.patchRate = 100; // 100ms = 10Hz
-    
-    // 🔥 FIX: Faster heartbeat. This fights the external reverse proxy timeouts (Vercel/Nginx).
-    // CAVE MAN FIX: Set properties directly, no special function needed.
-    this.pingInterval = 3000; // Ping client every 3 seconds
-    this.pongTimeout = 5000;  // If client is dead for 5 seconds, drop them
-    console.log("🔥 Heartbeat set to 3s/5s to fight proxies!");
-
+    this.patchRate = 67; // FPS = ~15 updates per second
 
     console.log("---------------------------------------");
     console.log(
@@ -40,6 +34,11 @@ export class FpsRoom extends Room {
 
 
     console.log("🔥 patchRate at onCreate:", this.patchRate);
+
+    this.onMessage("ping", (client) => {
+      console.log('Recieved pong from client:', client.sessionId);
+      client.send("pong");
+    });
 
     // 🔥 IMPORTANT: don't block room creation on GLB download
     this.loadArena()
@@ -152,12 +151,6 @@ export class FpsRoom extends Room {
 
   onLeave(client) {
     console.log(`👋 [onLeave] ${client.sessionId} in roomId=${this.roomId}`);
-
-    try {
-      console.log("   closeCode:", client.closeCode, "reason:", client.closeReason);
-    } catch (e) {
-      // ignore if not present
-    }
 
     this.state.players.delete(client.sessionId);
 
