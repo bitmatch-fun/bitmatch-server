@@ -48,7 +48,7 @@ export class FpsRoom extends Room {
     this.onMessage("move", (client, data) => {
       onMove(this, client, data);
     });
-    
+
     this.setSimulationInterval((dt) => this.update(dt), 1000); // 1Hz logic
 
     // Shooting
@@ -146,6 +146,12 @@ export class FpsRoom extends Room {
 
   onLeave(client) {
     console.log(`👋 [onLeave] ${client.sessionId} in roomId=${this.roomId}`);
+
+    try {
+      console.log("   closeCode:", client.closeCode, "reason:", client.closeReason);
+    } catch (e) {
+      // ignore if not present
+    }
 
     this.state.players.delete(client.sessionId);
 
