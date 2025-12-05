@@ -35,9 +35,7 @@ matchMaker.controller.getCorsHeaders = function (req) {
 };
 
 const gameServer = new Server({
-  transport: new uWebSocketsTransport({
-    idleTimeout: 960,
-  }),
+  transport: new uWebSocketsTransport({}),
 });
 
 gameServer.define("fps", FpsRoom);
