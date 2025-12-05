@@ -1,4 +1,3 @@
-// rooms/fps-room.js
 import { Room } from "colyseus";
 import { FpsState, Player } from "../schema/fps-state.js";
 import RAPIER from "@dimforge/rapier3d-compat";
@@ -18,6 +17,14 @@ export class FpsRoom extends Room {
   async onCreate(options) {
 
     this.patchRate = 100; // 100ms = 10Hz
+    
+    // 🔥 FIX: Faster heartbeat. This fights the external reverse proxy timeouts (Vercel/Nginx).
+    this.setOptions({
+        pingInterval: 3000, // Ping client every 3 seconds
+        pongTimeout: 5000,  // If client is dead for 5 seconds, drop them
+    });
+    console.log("🔥 Heartbeat set to 3s/5s to fight proxies!");
+
 
     console.log("---------------------------------------");
     console.log(
