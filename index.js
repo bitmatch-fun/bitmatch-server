@@ -36,7 +36,7 @@ matchMaker.controller.getCorsHeaders = function (req) {
 
 const gameServer = new Server({
   transport: new uWebSocketsTransport({
-    idleTimeout: 900,
+    idleTimeout: 980,
   }),
 });
 
