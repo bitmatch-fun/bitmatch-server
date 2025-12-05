@@ -19,10 +19,9 @@ export class FpsRoom extends Room {
     this.patchRate = 100; // 100ms = 10Hz
     
     // 🔥 FIX: Faster heartbeat. This fights the external reverse proxy timeouts (Vercel/Nginx).
-    this.setOptions({
-        pingInterval: 3000, // Ping client every 3 seconds
-        pongTimeout: 5000,  // If client is dead for 5 seconds, drop them
-    });
+    // CAVE MAN FIX: Set properties directly, no special function needed.
+    this.pingInterval = 3000; // Ping client every 3 seconds
+    this.pongTimeout = 5000;  // If client is dead for 5 seconds, drop them
     console.log("🔥 Heartbeat set to 3s/5s to fight proxies!");
 
 
