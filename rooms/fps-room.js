@@ -24,7 +24,7 @@ export class FpsRoom extends Room {
       `⚡ FpsRoom CREATED (${COLLIDER_SOURCE.toUpperCase()} TRIMESH) roomId=${this.roomId}`
     );
 
-    this.maxClients = 16;
+    this.maxClients = 10;
     this.setState(new FpsState());
 
     await RAPIER.init();
@@ -32,11 +32,7 @@ export class FpsRoom extends Room {
     this.playerBodies = new Map();
     this.arenaReady = false;
 
-
-    console.log("🔥 patchRate at onCreate:", this.patchRate);
-
     this.onMessage("ping", (client) => {
-      console.log('Recieved pong from client:', client.sessionId);
       client.send("pong");
     });
 
